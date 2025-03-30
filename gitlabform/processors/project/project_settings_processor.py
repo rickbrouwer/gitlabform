@@ -23,6 +23,14 @@ class ProjectSettingsProcessor(AbstractProcessor):
         debug("project_settings BEFORE: ^^^")
 
         self._process_project_topics(project_settings_in_config, project_settings_in_gitlab)
+        
+        # Process avatar separately before other settings
+        self._process_project_avatar(project, project_settings_in_config)
+        
+        # Remove avatar from config to prevent it from being processed in the standard way
+        if "avatar" in project_settings_in_config:
+            project_settings_in_config = project_settings_in_config.copy()
+            del project_settings_in_config["avatar"]
 
         if self._needs_update(project_settings_in_gitlab, project_settings_in_config):
             debug("Updating project settings")
@@ -38,6 +46,7 @@ class ProjectSettingsProcessor(AbstractProcessor):
             debug("No update needed for project settings")
 
     def get_project_settings(self, project_path: str):
+        """Get project settings from GitLab."""
         return self.gl.get_project_by_path_cached(project_path).asdict()
 
     def _print_diff(self, project_or_project_and_group: str, entity_config, diff_only_changed: bool):
@@ -94,3 +103,33 @@ class ProjectSettingsProcessor(AbstractProcessor):
         debug(f"topics after adjustment: {adjusted_project_topics_to_set}")
 
         project_settings_in_config["topics"] = adjusted_project_topics_to_set
+        
+    def _process_project_avatar(self, project: Project, project_settings_in_config: dict) -> None:
+        """Process project avatar settings from configuration."""
+        avatar_config = project_settings_in_config.get("avatar")
+        if not avatar_config:
+            return
+        
+        debug(f"Processing project avatar configuration: {avatar_config}")
+        
+        # Handle avatar deletion
+        if isinstance(avatar_config, dict) and avatar_config.get("delete", False):
+            debug("Deleting project avatar")
+            project.avatar = ""
+            project.save()
+            debug("Avatar delete successfully")
+
+        # Handle avatar upload
+        if isinstance(avatar_config, dict) and "file" in avatar_config:
+            avatar_path = avatar_config["file"]
+            debug(f"Setting project avatar from file: {avatar_path}")
+            
+            try:
+                with open(avatar_path, 'rb') as avatar_file:
+                    project.avatar = avatar_file
+                    project.save()
+                debug("Avatar uploaded successfully")
+            except FileNotFoundError:
+                debug(f"Avatar file not found: {avatar_path}")
+            except Exception as e:
+                debug(f"Error uploading avatar: {str(e)}")
