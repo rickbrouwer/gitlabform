@@ -67,6 +67,8 @@ class GitLabForm:
             self.strict = True
             self.start_from = 1
             self.start_from_group = 1
+            self.stop_at = None
+            self.stop_at_group = None
             self.noop = noop
             self.diff_only_changed = False
             self.output_file = output_file
@@ -89,6 +91,8 @@ class GitLabForm:
                 self.strict,
                 self.start_from,
                 self.start_from_group,
+                self.stop_at,
+                self.stop_at_group,
                 self.noop,
                 self.diff_only_changed,
                 self.output_file,
@@ -265,6 +269,26 @@ class GitLabForm:
             help="start processing groups from the given one "
             '(as numbered by "x/y Processing group/project" messages)',
         )
+        
+        parser.add_argument(
+            "-sa",
+            "--stop-at",
+            dest="stop_at",
+            type=int,
+            default=None,
+            help="stop processing projects at the given number "
+            '(as numbered by "x/y Processing group/project" messages)'
+        )
+
+        parser.add_argument(
+            "-sag",
+            "--stop-at-group",
+            dest="stop_at_group",
+            type=int,
+            default=None,
+            help="stop processing groups at the given number "
+            '(as numbered by "x/y Processing group/project" messages)
+	)
 
         parser.add_argument(
             "-os",
@@ -296,6 +320,8 @@ class GitLabForm:
             args.strict,
             args.start_from,
             args.start_from_group,
+            args.stop_at,
+            args.stop_at_group,
             args.noop,
             args.diff_only_changed,
             args.output_file,
@@ -417,6 +443,17 @@ class GitLabForm:
                     reset,
                 )
                 continue
+            
+            if self.stop_at_group is not None and group_number > self.stop_at_group:
+                self._info_group_count(
+                    "@",
+                    group_number,
+                    len(groups),
+                    yellow,
+                    f"Stopping processing as requested to stop at group {self.stop_at_group}...",
+                    reset,
+                )
+                break
 
             group_configuration = self.configuration.get_effective_config_for_group(group)
 
@@ -475,6 +512,17 @@ class GitLabForm:
                     reset,
                 )
                 continue
+
+            if self.stop_at is not None and project_number > self.stop_at:
+                self._info_project_count(
+                    "*",
+                    project_number,
+                    len(projects),
+                    yellow,
+                    f"Stopping processing as requested to stop at project {self.stop_at}...",
+                    reset,
+                )
+                break
 
             project_configuration = self.configuration.get_effective_config_for_project(project_and_group)
 
