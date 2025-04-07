@@ -112,24 +112,23 @@ class ProjectSettingsProcessor(AbstractProcessor):
         
         debug(f"Processing project avatar configuration: {avatar_config}")
         
-        # Handle avatar deletion
-        if isinstance(avatar_config, dict) and avatar_config.get("delete", False):
-            debug("Deleting project avatar")
-            project.avatar = ""
-            project.save()
-            debug("Avatar delete successfully")
-
-        # Handle avatar upload
+        # Handle avatar configuration
         if isinstance(avatar_config, dict) and "file" in avatar_config:
             avatar_path = avatar_config["file"]
-            debug(f"Setting project avatar from file: {avatar_path}")
-            
-            try:
-                with open(avatar_path, 'rb') as avatar_file:
-                    project.avatar = avatar_file
-                    project.save()
-                debug("Avatar uploaded successfully")
-            except FileNotFoundError:
-                debug(f"Avatar file not found: {avatar_path}")
-            except Exception as e:
-                debug(f"Error uploading avatar: {str(e)}")
+
+            if avatar_path == "":
+                debug("Deleting project avatar")
+                project.avatar = ''
+                project.save()
+                debug("Project avatar deleted successfully")
+            else:
+                debug(f"Setting project avatar from file: {avatar_path}")
+                try:
+                    with open(avatar_path, 'rb') as avatar_file:
+                        project.avatar = avatar_file
+                        project.save()
+                    debug("Project avatar uploaded successfully")
+                except FileNotFoundError:
+                    debug(f"Project avatar file not found: {avatar_path}")
+                except Exception as e:
+                    debug(f"Error uploading project avatar: {str(e)}")
