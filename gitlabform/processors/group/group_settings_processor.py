@@ -45,24 +45,23 @@ class GroupSettingsProcessor(AbstractProcessor):
 
         debug(f"Processing group avatar configuration: {avatar_config}")
 
-        # Handle avatar deletion
-        if isinstance(avatar_config, dict) and avatar_config.get("delete", False):
-            debug("Deleting group avatar")
-            gitlab_group.avatar = ""
-            gitlab_group.save()
-            debug("Avatar delete successfully")
-
-        # Handle avatar upload
+        # Handle avatar update or deletion
         if isinstance(avatar_config, dict) and "file" in avatar_config:
             avatar_path = avatar_config["file"]
-            debug(f"Setting group avatar from file: {avatar_path}")
 
-            try:
-                with open(avatar_path, 'rb') as avatar_file:
-                    gitlab_group.avatar = avatar_file
-                    gitlab_group.save()
-                debug("Group avatar uploaded successfully")
-            except FileNotFoundError:
-                debug(f"Group avatar file not found: {avatar_path}")
-            except Exception as e:
-                debug(f"Error uploading group avatar: {str(e)}")
+            if avatar_path == "":
+                debug("Deleting group avatar")
+                gitlab_group.avatar = ""
+                gitlab_group.save()
+                debug("Avatar deleted successfully")
+            else:
+                debug(f"Setting group avatar from file: {avatar_path}")
+                try:
+                    with open(avatar_path, 'rb') as avatar_file:
+                        gitlab_group.avatar = avatar_file
+                        gitlab_group.save()
+                    debug("Group avatar uploaded successfully")
+                except FileNotFoundError:
+                    debug(f"Group avatar file not found: {avatar_path}")
+                except Exception as e:
+                    debug(f"Error uploading group avatar: {str(e)}")
