@@ -6,7 +6,7 @@ import pytest
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
-from gitlab import Gitlab
+from gitlab import Gitlab, GraphQL
 from gitlab.v4.objects import Group, Project, User, ProjectAccessToken, GroupAccessToken
 
 from gitlabform.gitlab import AccessLevel, GitLab
@@ -36,6 +36,11 @@ def message_recorder():
 @pytest.fixture(scope="session")
 def gl():
     return Gitlab(os.getenv("GITLAB_URL"), private_token=os.getenv("GITLAB_TOKEN"))
+
+
+@pytest.fixture(scope="session")
+def gl_graphql():
+    return GraphQL(url=os.getenv("GITLAB_URL"), token=os.getenv("GITLAB_TOKEN"))
 
 
 @pytest.fixture(autouse=True)
@@ -113,6 +118,17 @@ def subgroup(gl: Gitlab, group: Group):
 
     with allowed_codes(404):
         gl.groups.delete(f"{group.full_path}/{subgroup_name}")
+
+
+@pytest.fixture(scope="function")
+def subgroup_for_function(gl: Gitlab, group_for_function: Group):
+    subgroup_name = get_random_name("subgroup")
+    gitlab_subgroup = create_group(subgroup_name, group_for_function.id)
+
+    yield gitlab_subgroup
+
+    with allowed_codes(404):
+        gl.groups.delete(f"{group_for_function.full_path}/{subgroup_name}")
 
 
 @pytest.fixture(scope="class")

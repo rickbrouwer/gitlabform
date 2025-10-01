@@ -1,5 +1,148 @@
 # Changelog
 
+## 4.5.0
+
+### Features
+
+* Add liquidlight logo [#1085](https://github.com/gitlabform/gitlabform/pull/1085). ([mikestreety](https://github.com/mikestreety))
+
+### Documentation
+
+* Update `ci_cd_variables.md` to include raw variable example [#1091](https://github.com/gitlabform/gitlabform/pull/1091). ([uob-hillmu](https://github.com/uob-hillmu))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+
+Thanks to all the contributors of this release!
+
+## 4.4.1
+
+### Bug Fixes
+
+* Group SAML Link config changes should be applied. Resolves [#994](https://github.com/gitlabform/gitlabform/issues/994), PR [#1076](https://github.com/gitlabform/gitlabform/pull/1076). ([amimas](https://github.com/amimas))
+
+### Tests
+
+* Improve branch protection tests [#1066](https://github.com/gitlabform/gitlabform/pull/1066). ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+* Add smoke tests for python 3.13
+* Add acceptance test for group ldap links [#1079](https://github.com/gitlabform/gitlabform/pull/1079). ([amimas](https://github.com/amimas))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+* Update Dockerfile to use latest version of Alpine
+
+Thanks to all the contributors of this release!
+
+## 4.4.0
+
+### Features
+
+- implement "exclude-sections" CLI parameter [#1016](https://github.com/gitlabform/gitlabform/pull/1016). ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+### Documentation
+
+- update intro using common term [#1065](https://github.com/gitlabform/gitlabform/pull/1065). ([mfriedenhagen](https://github.com/mfriedenhagen))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+
+Thanks to all the contributors of this release!
+
+## 4.3.0
+
+### Chores
+
+- Improve logging within group_members_processor [#1064](https://github.com/gitlabform/gitlabform/pull/1064) ([TimKnight-Opencast](https://github.com/TimKnight-Opencast))
+
+### Features
+
+- add support for group and project avatar [#987](https://github.com/gitlabform/gitlabform/pull/987) ([rickbrouwer](https://github.com/rickbrouwer))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+
+Thanks to all the contributors of this release!
+
+## 4.2.6
+
+### Bug Fixes
+
+* Handle the case where an integration doesn't exist when trying to delete it. (fixes #1036) [#1040](https://github.com/gitlabform/gitlabform/pull/1040) ([Andrew Wilkinson](https://github.com/andrewjw))
+* Ensure gitlabform can handle mixed case username in gitlab [#1056](https://github.com/gitlabform/gitlabform/pull/1056) ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+* Verbose output for members_processor [#1018](https://github.com/gitlabform/gitlabform/pull/1018) ([BenediktBertsch](https://github.com/BenediktBertsch))
+* Centred logos in `used by` documentation and added Roche [#1019](https://github.com/gitlabform/gitlabform/pull/1019) ([BenediktBertsch](https://github.com/BenediktBertsch))
+
+### Tests
+
+* fix test case for job token scope [#1035](https://github.com/gitlabform/gitlabform/pull/1035) ([amimas](https://github.com/amimas))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+
+Thanks to all the contributors of this release!
+
+## 4.2.5
+
+### Fixes
+
+* Do not attempt to create or update labels defined in parent group [#1007](https://github.com/gitlabform/gitlabform/pull/1007), closes [#1006](https://github.com/gitlabform/gitlabform/issues/1006), ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+Thanks to all the contributors of this release!
+
+
+## 4.2.4
+
+### Fixes
+
+* Improves logging within labels processor [fdda773e](https://github.com/gitlabform/gitlabform/commit/fdda773e920dcb38680be2068cb5c0a7f64d92c8) ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+Thanks to all the contributors of this release!
+
+
+## 4.2.3
+
+### Fixes
+
+* Fix labels get deleted and recreated if the key in YAML does not match the name in YAML or Gitlab [#1004](https://github.com/gitlabform/gitlabform/pull/1004) ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+Thanks to all the contributors of this release!
+
+## 4.2.2
+
+### Fixes
+
+* Fix a 404 error when labels_processor attempts to delete labels set on parent group(s) [#1003](https://github.com/gitlabform/gitlabform/pull/1003), ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+Thanks to all the contributors of this release!
+
+
+## 4.2.1
+
+### Features
+
+* add support for 'Planner' role [#981](https://github.com/gitlabform/gitlabform/pull/981) ([amimas](https://github.com/amimas))
+
+### Fixes
+
+* Improved logging in Labels processor [#1002](https://github.com/gitlabform/gitlabform/pull/1002), ([TimKnight-DWP](https://github.com/TimKnight-DWP))
+
+### Documentation
+
+* Document preference for using python-gitlab [#73](https://github.com/gitlabform/gitlabform/issues/73), [#988](https://github.com/gitlabform/gitlabform/pull/988) [gdubicki](https://github.com/gdubicki)
+* Fix changelog for v4.2.0 [#982](https://github.com/gitlabform/gitlabform/pull/982) ([amimas](https://github.com/amimas))
+
+### Dependencies
+
+* Update various dependencies to newer version.
+
+
+Thanks to all the contributors of this release!
+
 ## 4.2.0
 
 ### Features
