@@ -25,17 +25,20 @@ class GitLabCore:
     def __init__(self, config_path=None, config_string=None):
         self.configuration = Configuration(config_path, config_string)
 
+        gitlab_config_from_file = self.configuration.get("gitlab", {})
+    
+        token_env = gitlab_config_from_file.get("token_env", "GITLAB_TOKEN")
+        url_env = gitlab_config_from_file.get("url_env", "GITLAB_URL")
+        
         default_gitlab_config = {
-            "url": os.getenv("GITLAB_URL"),
-            "token": os.getenv("GITLAB_TOKEN"),
+            "url": os.getenv(url_env),
+            "token": os.getenv(token_env),
             "ssl_verify": True,
             "timeout": 10,
             "max_retries": 3,
             "backoff_factor": 0.25,
             "retry_transient_errors": True,
         }
-        gitlab_config_from_file = self.configuration.get("gitlab", {})
-        self.gitlab_config = {**default_gitlab_config, **gitlab_config_from_file}
 
         self.session = requests.Session()
 
