@@ -57,12 +57,24 @@ gitlab:
 | `url` | string | `GITLAB_URL` | URL of your GitLab instance |
 | `token` | string | `GITLAB_TOKEN` | Private token or OAuth2 access token of an admin user |
 
+The environment variable names shown above can be customized via the optional `url_env` and `token_env` parameters below, useful when running multiple tools in the same shell or CI pipeline that expect conflicting variable names.
+
 #### Optional parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `ssl_verify` | bool | `true` | Whether to verify SSL certificate. By default, root certificates from the Certifi package are used for verification. For guidance on using system or custom CA bundles while keeping SSL verification enabled, see [Using an alternative CA store for SSL verification](../running.md#using-an-alternative-ca-store-for-ssl-verification). Set to `false` for self-signed certificates (not recommended) |
 | `timeout` | int | `10` | Timeout for requests to the GitLab API, in seconds |
+| `url_env` | string | `GITLAB_URL` | Name of the environment variable to read the GitLab URL from |
+| `token_env` | string | `GITLAB_TOKEN` | Name of the environment variable to read the access token from |
+
+Example of using custom environment variable names:
+
+```yaml
+gitlab:
+  url_env: GITLAB_URL_BEH
+  token_env: GITLAB_TOKEN_BEH
+```
 
 #### Advanced parameters
 
